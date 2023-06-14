@@ -281,7 +281,6 @@ void incluirParticipantes(struct participantes PA[], int contadorParticipantes, 
     int refCidade = 0;
     int refApresentador = 0;
     int codEvento;
-    int codParticipante;
 
     cout << "Digite o codigo do evento que deseja inscrever o participante: ";
     cin >> codEvento;
@@ -518,8 +517,8 @@ int main(){
         cout << " \t\t\t 2 - Realizar leitura de Apresentador \n\n";
         cout << " \t\t\t 3 - Realizar leitura de Eventos \n\n";
         cout << " \t\t\t 4 - Realizar leitura de Participantes \n\n";
-        cout << " \t\t\t 5 - Incluir Participantes \n\n";
-        cout << " \t\t\t 6 - Incluir Apresentadores \n\n";
+        cout << " \t\t\t 5 - Incluir Apresentadores \n\n";
+        cout << " \t\t\t 6 - Incluir Participantes \n\n";
         cout << " \t\t\t 7 - Incluir Evento \n\n";
         cout << " \t\t\t 8 - Mostrar Eventos \n\n";
         cout << " \t\t\t 9 - Consultar Evento \n\n";
