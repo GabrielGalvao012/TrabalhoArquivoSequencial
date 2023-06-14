@@ -1,10 +1,10 @@
 #include <iostream>
 #include <conio.h>
-#include <math.h>
 #include <string.h>
 
 using namespace std;
 
+/* ESTRUTURAS */
 struct cidades {
     int codigoCidade;
     char nomeCidade[30];
@@ -33,7 +33,7 @@ struct participantes{
     int codigoEvento;
 };
 
-
+/* VERIFICAÇÕES */
 int verificarCidade(struct cidades CI[], int cod, int contadorCidade){
     int i = 0, f=contadorCidade;
     int m=(i+f)/2;
@@ -94,6 +94,31 @@ int verificarParticipantes(struct participantes PA[], int contadorParticipantes,
     } else
         return -1;
 }
+int verificarEvento(struct eventos EV[], int codEvento, int contEvento, cidades CI[], apresentadores AP[]){
+    int i = 0, f=contEvento;
+    int m=(i+f)/2;
+    int codEventoEncontrado = 0;
+    for (; f >= i && codEvento != EV[m].codigoEvento; m = (i + f)/2){
+        if(codEvento > EV[m].codigoEvento)
+            i = m + 1;
+        else
+            f = m - 1;
+    }
+    if( codEvento == EV[m].codigoEvento){
+        cout<<"---------------Evento encontrado---------------"<<endl;
+        cout<<"\nDescricao do evento: "<<EV[m].descricaoEvento<<endl;
+        cout<<"cidade do evento: "<<CI[m].nomeCidade<<endl;
+        cout<<"apresentador do evento: "<<AP[m].nomeApresentador<<endl;
+        cout<<"____"<<endl;
+        codEventoEncontrado = EV[m].codigoEvento;
+
+        return m;
+    }else {
+        return -1;
+    }
+}
+
+/* LEITURAS */
 void leituraCidades(struct cidades CI[], int &contadorCidade){
     int saida = 1;
     int i= 0;
@@ -213,29 +238,6 @@ void leituraEventos(struct eventos EV[],int &contEvento,struct cidades CI[], str
     }
     cout<<"Foram cadastrados (" << contEvento<< ") eventos."<<endl;
 }
-int verificarEvento(struct eventos EV[], int codEvento, int contEvento, cidades CI[], apresentadores AP[]){
-    int i = 0, f=contEvento;
-    int m=(i+f)/2;
-    int codEventoEncontrado = 0;
-    for (; f >= i && codEvento != EV[m].codigoEvento; m = (i + f)/2){
-        if(codEvento > EV[m].codigoEvento)
-            i = m + 1;
-        else
-            f = m - 1;
-    }
-    if( codEvento == EV[m].codigoEvento){
-        cout<<"---------------Evento encontrado---------------"<<endl;
-        cout<<"\nDescricao do evento: "<<EV[m].descricaoEvento<<endl;
-        cout<<"cidade do evento: "<<CI[m].nomeCidade<<endl;
-        cout<<"apresentador do evento: "<<AP[m].nomeApresentador<<endl;
-        cout<<"____"<<endl;
-        codEventoEncontrado = EV[m].codigoEvento;
-
-        return m;
-    }else {
-        return -1;
-    }
-}
 void leituraParticipantes(struct participantes PA[],struct eventos EV[], int contEvento, cidades CI[], apresentadores AP[], int contadorParticipantes){
     int i = 0;
     int saida = 1;
@@ -274,6 +276,8 @@ void leituraParticipantes(struct participantes PA[],struct eventos EV[], int con
     }
     cout<<"Foram cadastrados (" << contadorParticipantes<< ") participantes"<<endl;
 }
+
+/* INCLUSÕES */
 void incluirParticipantes(struct participantes PA[], int contadorParticipantes, struct eventos EV[], int contEventos, struct cidades CI[],
                           int contadorCidade, struct apresentadores AP[], int contadorApresentador){
 
@@ -364,54 +368,6 @@ void incluirApresentadores(struct apresentadores AP[], int &contApresentadores){
 
     contApresentadores = k;
 }
-
-void consultarEventos(struct eventos EV[], int contEvento, struct cidades CI[], int contCidade, struct apresentadores AP[], int contAprens){
-    int codigoEvents, indiceEvento = 0, refMun = 0, refAprens = 0;
-
-    cout<<"Digite o codigo evento que deseja consultar: ";
-    cin>> codigoEvents;
-
-    if(codigoEvents != 0){
-        cout<< "Descricao do evento: ";
-        indiceEvento = verificarEvento(EV, codigoEvents, contEvento, CI, AP);
-        if(indiceEvento != -1){
-            refMun = EV[indiceEvento].codCidade;
-            cout<<"\nCidade do evento: ";
-            verificarCidade(CI, refMun, contCidade );
-            refAprens = EV[indiceEvento].codApresentador;
-            cout<<"\nApresentador do evento: ";
-            verificarApresentador(AP, refAprens, contAprens );
-            cout << "\nValor total do evento: R$" << EV[indiceEvento].quantidadeParticipante * EV[indiceEvento].precoUnitario;
-        } else {
-            cout << "Evento nao encontrado!" << endl;
-        }
-    } else {
-        cout << "Codigo invalido!" << endl;
-    }
-    getch();
-}
-
-void mostrarEventos(struct eventos EV[], int &contEvento, struct cidades CI[], int qtdeCidades, struct apresentadores AP[], int qtdeApresentadores){
-    float total= 0;
-    cout<<"Lista de todos os eventos atualizados: " <<endl;
-    for(int i = 0; i < contEvento; i++){
-        cout<<"\nCodigo do evento: "<<EV[i].codigoEvento;
-        cout<<"\nDescricao do evento: "<<EV[i].descricaoEvento;
-        cout<<"\nCodigo da cidade do evento: "<<EV[i].codCidade << " - ";
-        verificarCidade(CI, EV[i].codCidade,qtdeCidades);
-        cout<<"\nCodigo do apresentador do evento: "<<EV[i].codApresentador << " - ";
-        verificarApresentador(AP, EV[i].codApresentador, qtdeApresentadores);
-        cout<<"\nQuantidade de participantes: "<<EV[i].quantidadeParticipante;
-        cout<<"\nQuantidade limites de participantes: "<<EV[i].limiteParticipante;
-        cout<<"\nPreco do evento: R$"<<EV[i].precoUnitario;
-        cout<<"\nValor do evento: R$"<<EV[i].quantidadeParticipante * EV[i].precoUnitario;
-        cout<<"\n\n";
-        total = total + (EV[i].quantidadeParticipante * EV[i].precoUnitario);
-    }
-    cout<<"Valor total de todos os eventos: R$" << total;
-    getch();
-}
-
 void incluirEventos(struct eventos EV[], int &contEventos, int qtdCidade, int qtdApresentador, struct cidades CI[], struct apresentadores AP[]){
 
     struct eventos inclusaoEvento[20];
@@ -487,23 +443,73 @@ void incluirEventos(struct eventos EV[], int &contEventos, int qtdCidade, int qt
     contEventos = k;
 }
 
+/* FUNÇÕES PARA MOSTRAR */
+void consultarEventos(struct eventos EV[], int contEvento, struct cidades CI[], int contCidade, struct apresentadores AP[], int contAprens){
+    int codigoEvents, indiceEvento = 0, refMun = 0, refAprens = 0;
+
+    cout<<"Digite o codigo evento que deseja consultar: ";
+    cin>> codigoEvents;
+
+    if(codigoEvents != 0){
+        cout<< "Descricao do evento: ";
+        indiceEvento = verificarEvento(EV, codigoEvents, contEvento, CI, AP);
+        if(indiceEvento != -1){
+            refMun = EV[indiceEvento].codCidade;
+            cout<<"\nCidade do evento: ";
+            verificarCidade(CI, refMun, contCidade );
+            refAprens = EV[indiceEvento].codApresentador;
+            cout<<"\nApresentador do evento: ";
+            verificarApresentador(AP, refAprens, contAprens );
+            cout << "\nValor total do evento: R$" << EV[indiceEvento].quantidadeParticipante * EV[indiceEvento].precoUnitario;
+        } else {
+            cout << "Evento nao encontrado!" << endl;
+        }
+    } else {
+        cout << "Codigo invalido!" << endl;
+    }
+    getch();
+}
+void mostrarEventos(struct eventos EV[], int &contEvento, struct cidades CI[], int qtdeCidades, struct apresentadores AP[], int qtdeApresentadores){
+    float total= 0;
+    cout<<"Lista de todos os eventos atualizados: " <<endl;
+    for(int i = 0; i < contEvento; i++){
+        cout<<"\nCodigo do evento: "<<EV[i].codigoEvento;
+        cout<<"\nDescricao do evento: "<<EV[i].descricaoEvento;
+        cout<<"\nCodigo da cidade do evento: "<<EV[i].codCidade << " - ";
+        verificarCidade(CI, EV[i].codCidade,qtdeCidades);
+        cout<<"\nCodigo do apresentador do evento: "<<EV[i].codApresentador << " - ";
+        verificarApresentador(AP, EV[i].codApresentador, qtdeApresentadores);
+        cout<<"\nQuantidade de participantes: "<<EV[i].quantidadeParticipante;
+        cout<<"\nQuantidade limites de participantes: "<<EV[i].limiteParticipante;
+        cout<<"\nPreco do evento: R$"<<EV[i].precoUnitario;
+        cout<<"\nValor do evento: R$"<<EV[i].quantidadeParticipante * EV[i].precoUnitario;
+        cout<<"\n\n";
+        total = total + (EV[i].quantidadeParticipante * EV[i].precoUnitario);
+    }
+    cout<<"Valor total de todos os eventos: R$" << total;
+    getch();
+}
+
+
+/* MAIN */
 int main(){
 
-    struct apresentadores AP[20];
-    int contadorApresentador;
-
-    struct eventos EV[20];
-    int contEvento;
-
-    struct participantes P[20], A[20], R[40];
-    struct participantes PA[20];
-    int contadorParticipantes;
-    int qtdeParticipantes ;
-
+    /* CIDADE */
     struct cidades CI[20];
     int contadorCidade;
     int qtdeCidades ;
-    struct cidades listaCidades[qtdeCidades];
+
+    /* PARTICIPANTE */
+    struct participantes PA[20];
+    int contadorParticipantes;
+
+    /* APRESENTADOR */
+    struct apresentadores AP[20];
+    int contadorApresentador;
+
+    /* EVENTO */
+    struct eventos EV[20];
+    int contEvento;
 
     int sair;
     int opcao;
@@ -584,12 +590,6 @@ int main(){
                 getch();
                 break;
             }
-            default:
-            {
-                cout << "Opcao invalida\n";
-                break;
-            }
         }
-        system("pause");
     }
 }
