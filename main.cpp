@@ -490,7 +490,6 @@ void inscreverParticipantes(struct participantes PA[], int &contadorParticipante
     getch();
 }
 
-
 // FUNÇÕES PARA MOSTRAR //
 void consultarEventos(struct eventos EV[], int contadorEventos, struct cidades CI[], int contadorCidades, struct apresentadores AP[], int contadorApresentadores){
     int codigoConsultaEvento;
@@ -551,7 +550,7 @@ void mostrarEventos(struct eventos EV[], int contEvento, struct cidades CI[], in
 }
 
 //FUNÇÕES DE EXIBIÇÃO //
-void exibirCidades(struct cidades CI[], int contadorCidades){
+  void exibirCidades(struct cidades CI[], int contadorCidades){
     cout << "\t\tIMPRIMINDO CIDADES\n\n";
     for (int i = 0; i < contadorCidades; i++)
     {
@@ -712,9 +711,9 @@ int main(){
 
             case 0: {
                 system("cls");
-                char Encerrar='N';
+                char Encerrar = 'N';
                 cout<<"\n\nDeseja encerrar o programa? (S/N) : ";
-                sair=toupper(getche());
+                sair = toupper(getche());
                 if(Encerrar=='S'){
                     cout<<"\n\nSaindo do programa...";
 
