@@ -1,14 +1,13 @@
 #include <iostream>
 #include <conio.h>
-#include <string.h>
-
+#include <strings.h>
 using namespace std;
 
-/* ESTRUTURAS */
-struct cidades {
+// ESTRUTURAS //
+struct cidades{
     int codigoCidade;
     char nomeCidade[30];
-    char uf[2];
+    char uf[3];
 };
 
 struct apresentadores{
@@ -33,212 +32,246 @@ struct participantes{
     int codigoEvento;
 };
 
-/* VERIFICAÇÕES */
-int verificarCidade(struct cidades CI[], int cod, int contadorCidade){
-    int i = 0, f=contadorCidade;
-    int m=(i+f)/2;
-    int codEncontrado;
+// VERIFICAÇÃO E LEITURA DE CIDADE //
+int verificarCidade(struct cidades CI[], int codigoCidade, int contadorCidades){
+    int i = 0, f = contadorCidades;
+    int m = ( i + f ) / 2;
+    int codigoCidadeEncontrado = 0;
 
-    for(; f >= i && cod != CI[m].codigoCidade; m = (i + f)/2){
-        if (cod > CI[m].codigoCidade)
+    for(; f >= i && codigoCidade != CI[m].codigoCidade; m = ( i + f ) / 2 ){
+        if ( codigoCidade > CI[m].codigoCidade )
             i = m + 1;
         else
             f = m - 1;
     }
-
-    if( cod == CI[m].codigoCidade){
-        cout<<"\nCidade encontrada";
-        cout<<"\nNome da cidade: " <<CI[m].nomeCidade;
-        cout<<"\nEstado: "<<CI[m].uf<<endl;
-        cout<<"____"<<endl;
-        codEncontrado = CI[m].codigoCidade;
+    if ( codigoCidade == CI[m].codigoCidade ){
+        cout << " \n Cidade Encontrada! ";
+        cout << " \n Nome da Cidade: " << CI[m].nomeCidade << endl;
+        cout << " \n Unidade Federativa: " << CI[i].uf << endl;
+        cout << "---------------------------------------------------" << endl;
+        codigoCidadeEncontrado = CI[m].codigoCidade;
         return m;
-    } else {
+    }
+    else {
         return -1;
     }
 }
-int verificarApresentador(struct apresentadores AP[], int cod, int contadorApresentador){
-    int i = 0, f=contadorApresentador;
-    int m=(i+f)/2;
-    int codAPencontrado = 0;
-
-    for(; f >= i && cod != AP[m].codigoApresentador; m = (i + f)/2){
-        if(cod > AP[m].codigoApresentador)
-            i = m + 1;
-        else
-            f = m - 1;
-    }
-    if( cod == AP[m].codigoApresentador){
-
-        cout<<"\nApresentador encontrado.";
-        cout<<"\nNome do apresentador: "<<AP[m].nomeApresentador<<endl;
-        cout<<"____"<<endl;
-        codAPencontrado = AP[m].codigoApresentador;
-        return m;
-    }else {
-        return -1;
-    }
-}
-int verificarParticipantes(struct participantes PA[], int contadorParticipantes, int codigoParticipante){
-    int i = 0, f = contadorParticipantes;
-    int m = (i + f) / 2;
-    for(; f > i && codigoParticipante != PA[m].codigoParticipante; m = (i + f) / 2){
-        if(codigoParticipante > PA[m].codigoParticipante)
-            i = m +1;
-        else
-            f = m - 1;
-    }
-    if (codigoParticipante == PA[m].codigoParticipante){
-        cout <<PA[m].codigoParticipante;
-        return m;
-    } else
-        return -1;
-}
-int verificarEvento(struct eventos EV[], int codEvento, int contEvento, cidades CI[], apresentadores AP[]){
-    int i = 0, f=contEvento;
-    int m=(i+f)/2;
-    int codEventoEncontrado = 0;
-    for (; f >= i && codEvento != EV[m].codigoEvento; m = (i + f)/2){
-        if(codEvento > EV[m].codigoEvento)
-            i = m + 1;
-        else
-            f = m - 1;
-    }
-    if( codEvento == EV[m].codigoEvento){
-        cout<<"---------------Evento encontrado---------------"<<endl;
-        cout<<"\nDescricao do evento: "<<EV[m].descricaoEvento<<endl;
-        cout<<"cidade do evento: "<<CI[m].nomeCidade<<endl;
-        cout<<"apresentador do evento: "<<AP[m].nomeApresentador<<endl;
-        cout<<"____"<<endl;
-        codEventoEncontrado = EV[m].codigoEvento;
-
-        return m;
-    }else {
-        return -1;
-    }
-}
-
-/* LEITURAS */
-void leituraCidades(struct cidades CI[], int &contadorCidade){
+void leituraCidades(struct cidades CI[], int &contadorCidades){
     int saida = 1;
-    int i= 0;
+    int i = 0;
 
-    for(; i<20 && saida !=0; i++ ){
-        cout<<"\nDigite o codigo da cidade: ";
-        cin>>CI[i].codigoCidade;
+    for(; i < 20 && saida != 0; i++ ){
+        cout << " \n Informe o codigo da Cidade: ";
+        cin >> CI[i].codigoCidade;
         cin.ignore();
-        if(CI[i].codigoCidade > 0){
-            cout<<"\nDigite o nome da cidade: ";
+        if ( CI[i].codigoCidade > 0 ){
+            cout << "\n Informe o nome da Cidade: ";
             gets(CI[i].nomeCidade);
-            cout<<"\nDigite a UF: ";
-            cin>>CI[i].uf;
-            cout<<"____"<<endl;
-            cin.ignore();
+            cout << "\n Informe a Unidade Federativa: ";
+            gets(CI[i].uf);
+            cout << "---------------------------------------------------" << endl;
         }
         else {
             saida = 0;
         }
     }
-    contadorCidade=i-1;
-    cout<<"Foram cadastradas (" <<contadorCidade<< ") Cidades."<<endl;
+    contadorCidades = i -1;
+    cout << " Foram cadastradas (" << contadorCidades << ") Cidades. " << endl;
 }
-void leituraApresentadores(struct apresentadores AP[], int &contadorApresentador){
-    int i=0;
-    int saida = 1;
 
-    for(; i<20 && saida !=0; i++ ){
-        cout<<"\nDigite o codigo do apresentador: ";
-        cin>>AP[i].codigoApresentador;
+// VERIFICAÇÃO E LEITURA DE APRESENTADOR //
+int verificarApresentador(struct apresentadores AP[], int codigoApresentador, int contadorApresentadores){
+    int i = 0, f = contadorApresentadores;
+    int m = ( i + f ) / 2;
+    int codigoApresentadorEncontrado = 0;
+
+    for (; f >= i && codigoApresentador != AP[m].codigoApresentador; m = ( i + f ) / 2 ){
+        if ( codigoApresentador > AP[m].codigoApresentador)
+            i = m + 1;
+        else
+            f = m - 1;
+    }
+    if ( codigoApresentador == AP[m].codigoApresentador ){
+        cout << "\n Apresentador Encontrado! ";
+        cout << " \n Nome do Apresentador: " << AP[m].nomeApresentador << endl;
+        cout << "---------------------------------------------------" << endl;
+        codigoApresentadorEncontrado = AP[m].codigoApresentador;
+        return m;
+    }
+    else {
+        return -1;
+    }
+}
+/*void leituraApresentadores(struct apresentadores AP[], int &contadorApresentadores){
+    int i = 0;
+    int saida = -1;
+
+    for (; i < 20 && saida != 0; i++ ){
+        cout << " \n Informe o codigo do Apresentador: ";
+        cin >> AP[i].codigoApresentador;
         cin.ignore();
-        if(AP[i].codigoApresentador > 0){
-            cout<<"\nDigite o nome do apresentador: ";
-            gets(AP[i].nomeApresentador);
-            cout<<"____"<<endl;
-        }
-        else {
-            cout<<"\nApresentadores cadastrados."<<endl;
+            if ( AP[i].codigoApresentador > 0 ){
+                cout << " \n Informe o nome do apresentador: ";
+                gets(AP[i].nomeApresentador);
+                cout << "---------------------------------------------------" << endl;
+            }
+            else{
+                cout << " \n Apresentadores Cadastrados.  " << endl;
+                saida = 0;
+            }
+    }
+    contadorApresentadores = i - 1;
+    cout << " Foram cadastrados (" << contadorApresentadores << ") Apresentadores. ";
+}*/
+
+void leituraApresentadores(struct apresentadores AP[], int &contadorApresentadores) {
+    int i = 0;
+    int saida = -1;
+    int contador = contadorApresentadores;
+
+    for (; i < 20 && saida != 0; i++) {
+        cout << "\nInforme o codigo do Apresentador: ";
+        cin >> AP[contador].codigoApresentador;
+        cin.ignore();
+
+        if (AP[contador].codigoApresentador > 0) {
+            cout << "\nInforme o nome do apresentador: ";
+            gets(AP[contador].nomeApresentador);
+            cout << "---------------------------------------------------" << endl;
+            contador++;
+        } else {
+            cout << "\nApresentadores Cadastrados." << endl;
             saida = 0;
         }
-    }
-    contadorApresentador=i-1;
-    cout<<"Foram cadastrados ("<<contadorApresentador<<") Apresentadores.";
-}
-void leituraEventos(struct eventos EV[],int &contEvento,struct cidades CI[], struct apresentadores AP[],
-                    int contadorCidade, int contadorApresentador){
-    int i=0;
-    int x=1;
-    int y=1;
-    int saida = 1;
-    int achouCidade;
-    int achouApresentador;
 
-    for(; i<20 && saida !=0; i++ ){
-        cout<<"Digite o codigo do evento: ";
-        cin>>EV[i].codigoEvento;
+    }
+    contadorApresentadores = contador + 1 - 1;
+    cout << "Foram cadastrados (" << contadorApresentadores << ") Apresentadores." << endl;
+}
+
+// VERIFICAÇÃO E LEITURA DE EVENTO //
+int verificarEvento(struct eventos EV[], int codigoEvento, int contadorEventos, struct cidades CI[], struct apresentadores AP[]) {
+    int i = 0, f = contadorEventos;
+    int m = (i + f) / 2;
+    int codigoEventoEncontrado = 0;
+    for (; f >= i && codigoEvento != EV[m].codigoEvento; m = ( i + f ) / 2) {
+        if ( codigoEvento > EV[m].codigoEvento )
+            i = m + 1;
+        else
+            f = m - 1;
+    }
+    if( codigoEvento == EV[m].codigoEvento ){
+        cout <<"---------------Evento encontrado---------------" << endl;
+        cout << " \n Descricao do Evento: " << EV[m].descricaoEvento << endl;
+        cout << " Cidade do Evento " << CI[m].nomeCidade << endl;
+        cout << " Apresentador do Evento: " << AP[m].nomeApresentador << endl;
+        cout << "---------------------------------------------------" << endl;
+        codigoEventoEncontrado = EV[m].codigoEvento;
+
+        return m;
+    }
+    else {
+        return -1;
+    }
+}
+void leituraEventos(struct eventos EV[], int &contadorEventos, struct cidades CI[], int &contadorCidades, struct apresentadores AP[], int &contadorApresentadores){
+    int i = 0;
+    int x = 1;
+    int y = 1;
+    int saida = 1;
+    int cidadeEncontrada;
+    int apresentadorEncontrado;
+
+    for(; i < 20 && saida != 0; i++ ){
+        cout << " Informe o codigo do Evento: ";
+        cin >> EV[i].codigoEvento;
         cin.ignore();
-        if(EV[i].codigoEvento > 0){
-            cout<<"Digite a descricao do evento: ";
+        if( EV[i].codigoEvento > 0 ){
+            cout << " Informe a Descricao do Evento: ";
             gets(EV[i].descricaoEvento);
-            cout<<"____"<<endl;
+            cout << "---------------------------------------------------" << endl;
 
-            x=1;
-            while (x !=0){
-                cout<<"Digite o codigo da cidade para o evento:  ";
-                cin>>EV[i].codCidade;
+            x = 1;
+
+            while( x != 0 ){
+                cout << " Informe o codigo da Cidade para o Evento: ";
+                cin >> EV[i].codCidade;
                 cin.ignore();
 
-                achouCidade = verificarCidade(CI,EV[i].codCidade, contadorCidade);
-                if(achouCidade != -1){
+                cidadeEncontrada = verificarCidade(CI, EV[i].codCidade, contadorCidades);
+                if( cidadeEncontrada != -1 ){
                     x = 0;
                 }
                 else {
-                    cout<<"\n !!! Cidade nao encontrada informe um codigo valido !!! \n"<<endl;
+                    cout << " \n Cidade nao encontrada, informe um codigo valido! \n " << endl;
                 }
             }
-            y=1;
-            while (y !=0){
-                cout<<"Digite o codigo do apresentador do evento: ";
-                cin>>EV[i].codApresentador;
+
+            y = 1;
+
+            while ( y != 0 ){
+                cout << " Informe o codigo do Apresentador para o Evento: ";
+                cin >> EV[i].codApresentador;
                 cin.ignore();
 
-                achouApresentador = verificarApresentador(AP, EV[i].codApresentador,contadorApresentador);
-                if(achouApresentador != -1){
+                apresentadorEncontrado = verificarApresentador(AP, EV[i].codApresentador, contadorApresentadores);
+                if ( apresentadorEncontrado != -1 ){
                     y = 0;
                 }
-                else{
-                    cout<<"\n !!! Apresentador nao encontrada informe um codigo valido !!! \n"<<endl;
+                else {
+                    cout << " \n Apresentador nao encontrado, informe um codigo valido! \n" << endl;
                 }
             }
 
-            cout<<"\nInforme qual sera o limite de participantes: ";
-            cin>>EV[i].limiteParticipante;
+            cout << " \n Informe qual sera o limite de Participantes: ";
+            cin >> EV[i].limiteParticipante;
             cin.ignore();
 
-            cout<<"\nDigite a quantidade de participantes: ";
-            cin>>EV[i].quantidadeParticipante;
+            cout << " \n Informe a quantidade de Participantes: ";
+            cin >> EV[i].quantidadeParticipante;
             cin.ignore();
 
-            while(EV[i].quantidadeParticipante > EV[i].limiteParticipante){
-                cout<<"\n LIMITE DE PARTICIPANTES ULTRAPASSADO"<<endl;
-                cout<<"\nInforme um valor menor que ("<<EV[i].limiteParticipante<<") novo valor: ";
-                cin>>EV[i].quantidadeParticipante;
+            while ( EV[i].quantidadeParticipante > EV[i].limiteParticipante ){
+                cout << " \n Limite de Participantes Ultrapassado! " << endl;
+                cout << " \n Informe um novo valor menor que (" << EV[i].limiteParticipante << ") : ";
+                cin >> EV[i].quantidadeParticipante;
                 cin.ignore();
             }
-            cout << "\nInforme qual o preco de entrada para este evento: ";
-            cin>>EV[i].precoUnitario;
-            cin.ignore();
-            cout<<"____"<<endl;
 
-            contEvento = i+1;
+            cout << " \n Informe qual o valor para entrada deste evento: ";
+            cin >> EV[i].precoUnitario;
+            cin.ignore();
+            cout << "---------------------------------------------------" << endl;
+
+            contadorEventos = i + 1;
         }
         else {
-            cout<<"Eventos cadastrados..."<<endl;
+            cout << " Eventos Cadastrados. " << endl;
             saida = 0;
         }
     }
-    cout<<"Foram cadastrados (" << contEvento<< ") eventos."<<endl;
+
+    cout << " Foram cadastrados (" << contadorEventos << ") Eventos. " << endl;
 }
-void leituraParticipantes(struct participantes PA[],struct eventos EV[], int contEvento, cidades CI[], apresentadores AP[], int contadorParticipantes){
+
+// VERIFICAÇÂO E LEITURA DE PARTICIPANTE //
+int verificarParticipante(struct participantes PA[], int codigoParticipante, int contadorParticipantes){
+    int i = 0, f = contadorParticipantes;
+    int m = ( i + f ) / 2;
+    for(; f >= i && codigoParticipante != PA[m].codigoParticipante; m = ( i + f) / 2) {
+        if (codigoParticipante > PA[m].codigoParticipante)
+            i = m + 1;
+        else
+            f = m - 1;
+    }
+    if( codigoParticipante == PA[m].codigoParticipante ){
+        cout << PA[m].codigoParticipante;
+        return m;
+    }
+    else
+        return - 1;
+}
+/*void leituraParticipantes(struct participantes PA[],struct eventos EV[], int contEvento, struct cidades CI[], struct apresentadores AP[], int &contadorParticipantes){
     int i = 0;
     int saida = 1;
     int eventoEncontrado;
@@ -256,30 +289,161 @@ void leituraParticipantes(struct participantes PA[],struct eventos EV[], int con
             gets(PA[i].nomeParticipante);
 
             x=1;
-            while(x != 0){
-                cout<<"Informe o evento do participante: ";
-                cin>>verificadorCodEvento;
-                cin.ignore();
-                eventoEncontrado = verificarEvento(EV,verificadorCodEvento,contEvento, CI, AP);
 
-                if(eventoEncontrado != -1 ){
-                    x=0;
-                }
-                else{
-                    cout<<"\n Evento nao encontrada informe um codigo valido! \n"<<endl;
-                }
-            }
         }else{
             saida=0;
         }
-        contadorParticipantes = i+1-1;
+        contadorParticipantes = i + 1 - 1;
     }
     cout<<"Foram cadastrados (" << contadorParticipantes<< ") participantes"<<endl;
+} */
+void leituraParticipantes(struct participantes PA[], struct eventos EV[], int contEvento, struct cidades CI[], struct apresentadores AP[], int &contadorParticipantes) {
+    int i = 0;
+    int saida = 1;
+    int eventoEncontrado;
+    int x = 0;
+    int verificadorCodEvento;
+    int contador = contadorParticipantes;
+
+    for (; i < 20 && saida != 0; i++) {
+        cout << "Digite o codigo do participante: ";
+        cin >> PA[contador].codigoParticipante;
+        cin.ignore();
+
+        if (PA[contador].codigoParticipante > 0) {
+            cout << "Informe o nome do participante: ";
+            gets(PA[contador].nomeParticipante);
+
+            x = 1;
+            contador++;
+        } else {
+            saida = 0;
+        }
+    }
+    contadorParticipantes = contador + 1 - 1;
+    cout << "Foram cadastrados (" << contadorParticipantes << ") participantes" << endl;
 }
 
-/* INCLUSÕES */
-void incluirParticipantes(struct participantes PA[], int contadorParticipantes, struct eventos EV[], int contEventos, struct cidades CI[],
-                          int contadorCidade, struct apresentadores AP[], int contadorApresentador){
+
+// INCLUSÔES //
+void incluirApresentadores(struct apresentadores AP[], int &contadorApresentadores){
+    struct apresentadores inclusaoApresentadores[20];
+    int contadorInclusaoApresentadores = 0;
+    leituraApresentadores(AP, contadorApresentadores);
+    struct apresentadores apresentadoresAtualizado[20];
+
+    int i = 0;
+    int j = 0, k = 0;
+    for(; i < contadorApresentadores && j < contadorInclusaoApresentadores; k++){
+        if (AP[i].codigoApresentador < inclusaoApresentadores[j].codigoApresentador){
+            apresentadoresAtualizado[k].codigoApresentador = AP[i].codigoApresentador;
+            strcpy(apresentadoresAtualizado[k].nomeApresentador, AP[i].nomeApresentador);
+            i++;
+        }
+        else
+        {
+            apresentadoresAtualizado[k].codigoApresentador = inclusaoApresentadores[j].codigoApresentador;
+            strcpy(apresentadoresAtualizado[k].nomeApresentador, inclusaoApresentadores[j].nomeApresentador);
+            j++;
+        }
+    }
+
+    while (i < contadorApresentadores){
+        apresentadoresAtualizado[k].codigoApresentador = AP[i].codigoApresentador;
+        strcpy(apresentadoresAtualizado[k].nomeApresentador, AP[i].nomeApresentador);
+        i++;
+        k++;
+    }
+
+    while (j < contadorInclusaoApresentadores){
+        apresentadoresAtualizado[k].codigoApresentador = inclusaoApresentadores[j].codigoApresentador;
+        strcpy(apresentadoresAtualizado[k].nomeApresentador, inclusaoApresentadores[j].nomeApresentador);
+        j++;
+        k++;
+    }
+
+    for (int i = 0; i < k; i++){
+        AP[i].codigoApresentador = apresentadoresAtualizado[i].codigoApresentador;
+        strcpy(AP[i].nomeApresentador, apresentadoresAtualizado[i].nomeApresentador);
+    }
+
+    contadorApresentadores = k;
+}
+void incluirEventos(struct eventos EV[], int &contadorEventos, int quantidadeCidades, int quantidadeApresentadores, struct  cidades CI[], struct apresentadores AP[]){
+    struct eventos inclusaoEventos[20];
+    int contadorInclusaoEvento = 0;
+    leituraEventos(EV, contadorEventos, CI, quantidadeCidades, AP, quantidadeApresentadores);
+    struct eventos eventosAtualizado[20];
+
+    int i = 0;
+    int k = 0, j = 0;
+    for (; i < contadorEventos && j < contadorInclusaoEvento; k++)
+    {
+        if (EV[i].codigoEvento < inclusaoEventos[j].codigoEvento)
+        {
+            eventosAtualizado[k].codigoEvento = EV[i].codigoEvento;
+            strcpy(eventosAtualizado[k].descricaoEvento, EV[i].descricaoEvento);
+            eventosAtualizado[k].codCidade = EV[i].codCidade;
+            eventosAtualizado[k].codApresentador = EV[i].codApresentador;
+            eventosAtualizado[k].quantidadeParticipante = EV[i].quantidadeParticipante;
+            eventosAtualizado[k].limiteParticipante = EV[i].limiteParticipante;
+            eventosAtualizado[k].precoUnitario = EV[i].precoUnitario;
+            i++;
+        }
+        else
+        {
+            eventosAtualizado[k].codigoEvento = inclusaoEventos[j].codigoEvento;
+            strcpy(eventosAtualizado[k].descricaoEvento, inclusaoEventos[j].descricaoEvento);
+            eventosAtualizado[k].codCidade = inclusaoEventos[j].codCidade;
+            eventosAtualizado[k].codApresentador = inclusaoEventos[j].codApresentador;
+            eventosAtualizado[k].quantidadeParticipante = inclusaoEventos[j].quantidadeParticipante;
+            eventosAtualizado[k].limiteParticipante = inclusaoEventos[j].limiteParticipante;
+            eventosAtualizado[k].precoUnitario = inclusaoEventos[j].precoUnitario;
+            j++;
+        }
+    }
+
+    while (i < contadorEventos)
+    {
+        eventosAtualizado[k].codigoEvento = EV[i].codigoEvento;
+        strcpy(eventosAtualizado[k].descricaoEvento, EV[i].descricaoEvento);
+        eventosAtualizado[k].codCidade = EV[i].codCidade;
+        eventosAtualizado[k].codApresentador = EV[i].codApresentador;
+        eventosAtualizado[k].quantidadeParticipante = EV[i].quantidadeParticipante;
+        eventosAtualizado[k].limiteParticipante = EV[i].limiteParticipante;
+        eventosAtualizado[k].precoUnitario = EV[i].precoUnitario;
+        i++;
+        k++;
+    }
+
+    while (j < contadorInclusaoEvento)
+    {
+        eventosAtualizado[k].codigoEvento = inclusaoEventos[j].codigoEvento;
+        strcpy(eventosAtualizado[k].descricaoEvento, inclusaoEventos[j].descricaoEvento);
+        eventosAtualizado[k].codCidade = inclusaoEventos[j].codCidade;
+        eventosAtualizado[k].codApresentador = inclusaoEventos[j].codApresentador;
+        eventosAtualizado[k].quantidadeParticipante = inclusaoEventos[j].quantidadeParticipante;
+        eventosAtualizado[k].limiteParticipante = inclusaoEventos[j].limiteParticipante;
+        eventosAtualizado[k].precoUnitario = inclusaoEventos[j].precoUnitario;
+        j++;
+        k++;
+    }
+
+    for (int i = 0; i < k; i++)
+    {
+        EV[i].codigoEvento = eventosAtualizado[i].codigoEvento;
+        strcpy(EV[i].descricaoEvento, eventosAtualizado[i].descricaoEvento);
+        EV[i].codCidade = eventosAtualizado[i].codCidade;
+        EV[i].codApresentador = eventosAtualizado[i].codApresentador;
+        EV[i].quantidadeParticipante = eventosAtualizado[i].quantidadeParticipante;
+        EV[i].limiteParticipante = eventosAtualizado[i].limiteParticipante;
+        EV[i].precoUnitario = eventosAtualizado[i].precoUnitario;
+    }
+
+    contadorEventos = k;
+}
+void inscreverParticipantes(struct participantes PA[], int &contadorParticipantes, struct eventos EV[], int contEventos, struct cidades CI[],
+                            int contadorCidade, struct apresentadores AP[], int contadorApresentador){
 
     int eventoEncontrado = 0;
     int refCidade = 0;
@@ -308,285 +472,253 @@ void incluirParticipantes(struct participantes PA[], int contadorParticipantes, 
                 cin >>codParticipante;
 
                 if(codParticipante != 0){
-                    participanteEncontrado =  verificarParticipantes(PA, contadorParticipantes, codParticipante);
+                    participanteEncontrado =  verificarParticipante(PA, contadorParticipantes, codParticipante);
                     PA[participanteEncontrado].codigoEvento = codEvento;
-                    EV[eventoEncontrado].quantidadeParticipante = EV[eventoEncontrado].quantidadeParticipante + 1;
+                    EV[eventoEncontrado].quantidadeParticipante++;
                     cout<<"\n Participante inscrito! ";
                 }
             } else {
-                cout <<"O evento escolhido não possui vagas para novas inscrições";
+                cout <<"O evento escolhido nao possui vagas para novas inscricoes";
             }
             cout << "Quantidade de participantes: " << EV[eventoEncontrado].quantidadeParticipante << endl;
             cout << "Limite de participantes: " << EV[eventoEncontrado].limiteParticipante << endl;
         } else {
-            cout << "Evento não encontrado!" << endl;
-        }
-    }
-    getch();
-}
-void incluirApresentadores(struct apresentadores AP[], int &contApresentadores){
-    system("cls");
-    struct apresentadores inclusaoApresentadores[20];
-    int contInclusaoApresentadores = 0;
-    leituraApresentadores(AP, contApresentadores);
-
-    struct apresentadores atApresentadores[20];
-
-    int i = 0, j = 0, k = 0;
-    for (; i < contApresentadores && j < contInclusaoApresentadores; k++){
-        if (AP[i].codigoApresentador < inclusaoApresentadores[j].codigoApresentador){
-            atApresentadores[k].codigoApresentador = AP[i].codigoApresentador;
-            strcpy(atApresentadores[k].nomeApresentador, AP[i].nomeApresentador);
-            i++;
-        }
-        else
-        {
-            atApresentadores[k].codigoApresentador = inclusaoApresentadores[j].codigoApresentador;
-            strcpy(atApresentadores[k].nomeApresentador, inclusaoApresentadores[j].nomeApresentador);
-            j++;
-        }
-    }
-
-    while (i < contApresentadores){
-        atApresentadores[k].codigoApresentador = AP[i].codigoApresentador;
-        strcpy(atApresentadores[k].nomeApresentador, AP[i].nomeApresentador);
-        i++;
-        k++;
-    }
-
-    while (j < contInclusaoApresentadores){
-        atApresentadores[k].codigoApresentador = inclusaoApresentadores[j].codigoApresentador;
-        strcpy(atApresentadores[k].nomeApresentador, inclusaoApresentadores[j].nomeApresentador);
-        j++;
-        k++;
-    }
-
-    for (int i = 0; i < k; i++){
-        AP[i].codigoApresentador = atApresentadores[i].codigoApresentador;
-        strcpy(AP[i].nomeApresentador, atApresentadores[i].nomeApresentador);
-    }
-
-    contApresentadores = k;
-}
-void incluirEventos(struct eventos EV[], int &contEventos, int qtdCidade, int qtdApresentador, struct cidades CI[], struct apresentadores AP[]){
-
-    struct eventos inclusaoEvento[20];
-    int contInclusaoEvento = 0;
-    leituraEventos(EV, contEventos, CI, AP, qtdCidade, qtdApresentador);
-
-    struct eventos atEvento[20];
-
-    int i = 0, k = 0, j = 0;
-    for (; i < contEventos && j < contInclusaoEvento; k++)
-    {
-        if (EV[i].codigoEvento < inclusaoEvento[j].codigoEvento)
-        {
-            atEvento[k].codigoEvento = EV[i].codigoEvento;
-            strcpy(atEvento[k].descricaoEvento, EV[i].descricaoEvento);
-            atEvento[k].codCidade = EV[i].codCidade;
-            atEvento[k].codApresentador = EV[i].codApresentador;
-            atEvento[k].quantidadeParticipante = EV[i].quantidadeParticipante;
-            atEvento[k].limiteParticipante = EV[i].limiteParticipante;
-            atEvento[k].precoUnitario = EV[i].precoUnitario;
-            i++;
-        }
-        else
-        {
-            atEvento[k].codigoEvento = inclusaoEvento[j].codigoEvento;
-            strcpy(atEvento[k].descricaoEvento, inclusaoEvento[j].descricaoEvento);
-            atEvento[k].codCidade = inclusaoEvento[j].codCidade;
-            atEvento[k].codApresentador = inclusaoEvento[j].codApresentador;
-            atEvento[k].quantidadeParticipante = inclusaoEvento[j].quantidadeParticipante;
-            atEvento[k].limiteParticipante = inclusaoEvento[j].limiteParticipante;
-            atEvento[k].precoUnitario = inclusaoEvento[j].precoUnitario;
-            j++;
-        }
-    }
-
-    while (i < contEventos)
-    {
-        atEvento[k].codigoEvento = EV[i].codigoEvento;
-        strcpy(atEvento[k].descricaoEvento, EV[i].descricaoEvento);
-        atEvento[k].codCidade = EV[i].codCidade;
-        atEvento[k].codApresentador = EV[i].codApresentador;
-        atEvento[k].quantidadeParticipante = EV[i].quantidadeParticipante;
-        atEvento[k].limiteParticipante = EV[i].limiteParticipante;
-        atEvento[k].precoUnitario = EV[i].precoUnitario;
-        i++;
-        k++;
-    }
-
-    while (j < contInclusaoEvento)
-    {
-        atEvento[k].codigoEvento = inclusaoEvento[j].codigoEvento;
-        strcpy(atEvento[k].descricaoEvento, inclusaoEvento[j].descricaoEvento);
-        atEvento[k].codCidade = inclusaoEvento[j].codCidade;
-        atEvento[k].codApresentador = inclusaoEvento[j].codApresentador;
-        atEvento[k].quantidadeParticipante = inclusaoEvento[j].quantidadeParticipante;
-        atEvento[k].limiteParticipante = inclusaoEvento[j].limiteParticipante;
-        atEvento[k].precoUnitario = inclusaoEvento[j].precoUnitario;
-        j++;
-        k++;
-    }
-
-    for (int i = 0; i < k; i++)
-    {
-        EV[i].codigoEvento = atEvento[i].codigoEvento;
-        strcpy(EV[i].descricaoEvento, atEvento[i].descricaoEvento);
-        EV[i].codCidade = atEvento[i].codCidade;
-        EV[i].codApresentador = atEvento[i].codApresentador;
-        EV[i].quantidadeParticipante = atEvento[i].quantidadeParticipante;
-        EV[i].limiteParticipante = atEvento[i].limiteParticipante;
-        EV[i].precoUnitario = atEvento[i].precoUnitario;
-    }
-
-    contEventos = k;
-}
-
-/* FUNÇÕES PARA MOSTRAR */
-void consultarEventos(struct eventos EV[], int contEvento, struct cidades CI[], int contCidade, struct apresentadores AP[], int contAprens){
-    int codigoEvents, indiceEvento = 0, refMun = 0, refAprens = 0;
-
-    cout<<"Digite o codigo evento que deseja consultar: ";
-    cin>> codigoEvents;
-
-    if(codigoEvents != 0){
-        cout<< "Descricao do evento: ";
-        indiceEvento = verificarEvento(EV, codigoEvents, contEvento, CI, AP);
-        if(indiceEvento != -1){
-            refMun = EV[indiceEvento].codCidade;
-            cout<<"\nCidade do evento: ";
-            verificarCidade(CI, refMun, contCidade );
-            refAprens = EV[indiceEvento].codApresentador;
-            cout<<"\nApresentador do evento: ";
-            verificarApresentador(AP, refAprens, contAprens );
-            cout << "\nValor total do evento: R$" << EV[indiceEvento].quantidadeParticipante * EV[indiceEvento].precoUnitario;
-        } else {
             cout << "Evento nao encontrado!" << endl;
         }
+    }
+    contadorParticipantes ++;
+    getch();
+}
+
+
+// FUNÇÕES PARA MOSTRAR //
+void consultarEventos(struct eventos EV[], int contadorEventos, struct cidades CI[], int contadorCidades, struct apresentadores AP[], int contadorApresentadores){
+    int codigoConsultaEvento;
+    int indiceEvento = 0;
+    int referenciaCidade = 0;
+    int referenciaApresentador = 0;
+
+    cout << " Informe o codigo do Evento que deseja consultar: ";
+    cin >> codigoConsultaEvento;
+
+    if( codigoConsultaEvento != 0 ){
+        cout << " Descricacao do Evento: ";
+        indiceEvento = verificarEvento(EV, codigoConsultaEvento, contadorEventos, CI, AP);
+        if( indiceEvento != -1 ){
+            referenciaCidade = EV[indiceEvento].codCidade;
+            cout << " \n Cidade do Evento: ";
+            verificarCidade(CI, referenciaCidade, contadorCidades);
+            referenciaApresentador = EV[indiceEvento].codApresentador;
+            cout << " \n Apresentador do Evento: ";
+            verificarApresentador(AP, referenciaApresentador, contadorApresentadores);
+            cout << " \n Valor total do evento: R$ " << EV[indiceEvento].quantidadeParticipante * EV[indiceEvento].precoUnitario;
+        }
+        else {
+            cout << " Evento nao encontrado! " << endl;
+        }
     } else {
-        cout << "Codigo invalido!" << endl;
+        cout << " Codigo invalido! " << endl;
     }
     getch();
 }
-void mostrarEventos(struct eventos EV[], int &contEvento, struct cidades CI[], int qtdeCidades, struct apresentadores AP[], int qtdeApresentadores){
+void mostrarEventos(struct eventos EV[], int contEvento, struct cidades CI[], int qtdeCidades, struct apresentadores AP[], int qtdeApresentadores){
     float total= 0;
-    cout<<"Lista de todos os eventos atualizados: " <<endl;
-    for(int i = 0; i < contEvento; i++){
-        cout<<"\nCodigo do evento: "<<EV[i].codigoEvento;
-        cout<<"\nDescricao do evento: "<<EV[i].descricaoEvento;
-        cout<<"\nCodigo da cidade do evento: "<<EV[i].codCidade << " - ";
-        verificarCidade(CI, EV[i].codCidade,qtdeCidades);
-        cout<<"\nCodigo do apresentador do evento: "<<EV[i].codApresentador << " - ";
-        verificarApresentador(AP, EV[i].codApresentador, qtdeApresentadores);
-        cout<<"\nQuantidade de participantes: "<<EV[i].quantidadeParticipante;
-        cout<<"\nQuantidade limites de participantes: "<<EV[i].limiteParticipante;
-        cout<<"\nPreco do evento: R$"<<EV[i].precoUnitario;
-        cout<<"\nValor do evento: R$"<<EV[i].quantidadeParticipante * EV[i].precoUnitario;
-        cout<<"\n\n";
-        total = total + (EV[i].quantidadeParticipante * EV[i].precoUnitario);
+
+    if( contEvento == 0 ){
+        cout << "\n Lista Vazia! " << endl;
+    }else {
+
+        cout<<"Lista de todos os eventos atualizados: " <<endl;
+
+        for(int i = 0; i < contEvento; i++){
+            cout<<"\nCodigo do evento: "<<EV[i].codigoEvento;
+            cout<<"\nDescricao do evento: "<<EV[i].descricaoEvento;
+            cout<<"\nCodigo da cidade do evento: "<<EV[i].codCidade << " - ";
+            verificarCidade(CI, EV[i].codCidade,qtdeCidades);
+            cout<<"\nCodigo do apresentador do evento: "<<EV[i].codApresentador << " - ";
+            verificarApresentador(AP, EV[i].codApresentador, qtdeApresentadores);
+            cout<<"\nQuantidade de participantes: "<<EV[i].quantidadeParticipante;
+            cout<<"\nQuantidade limites de participantes: "<<EV[i].limiteParticipante;
+            cout<<"\nPreco do evento: R$"<<EV[i].precoUnitario;
+            cout<<"\nValor do evento: R$"<<EV[i].quantidadeParticipante * EV[i].precoUnitario;
+            cout<<"\n\n";
+            total = total + (EV[i].quantidadeParticipante * EV[i].precoUnitario);
+        }
+        cout<<"Valor total de todos os eventos: R$" << total;
+        getch();
+
     }
-    cout<<"Valor total de todos os eventos: R$" << total;
-    getch();
 }
 
+//FUNÇÕES DE EXIBIÇÃO //
+void exibirCidades(struct cidades CI[], int contadorCidades){
+    cout << "\t\tIMPRIMINDO CIDADES\n\n";
+    for (int i = 0; i < contadorCidades; i++)
+    {
+        cout << "ID: " << CI[i].codigoCidade << endl;
+        cout << "Nome: " << CI[i].nomeCidade << endl;
+        cout << "UF: " << CI[i].uf << endl;
+        cout << "============================================\n";
+    }
+}
+void exibirApresentadores(struct apresentadores AP[], int contadorApresentadores){
+    cout << "\t\tIMPRIMINDO APRESENTADORES\n\n";
+    for (int i = 0; i < contadorApresentadores; i++)
+    {
+        cout << " Codigo do Apresentador: " << AP[i].codigoApresentador << endl;
+        cout << " Nome do Apresentador: " << AP[i].nomeApresentador << endl;
+        cout << "============================================\n";
+    }
+}
+void exibirParticipantes(struct participantes PA[], int contadorParticipantes){
+    cout << "\t\tIMPRIMINDO PARTICIPANTES\n\n";
+    for (int i = 0; i < contadorParticipantes; i++)
+    {
+        cout << " Codigo do Participante: " << PA[i].codigoParticipante << endl;
+        cout << " Nome do Participante: " << PA[i].nomeParticipante << endl;
+        cout << "============================================\n";
+    }
+}
 
-/* MAIN */
+// MAIN //
 int main(){
 
-    /* CIDADE */
+    // CIDADE //
     struct cidades CI[20];
-    int contadorCidade;
-    int qtdeCidades ;
+    int contadorCidades = 0;
+    int quantidadeCidades = 0;
 
-    /* PARTICIPANTE */
-    struct participantes PA[20];
-    int contadorParticipantes;
-
-    /* APRESENTADOR */
+    // APRESENTADOR //
     struct apresentadores AP[20];
-    int contadorApresentador;
+    int contadorApresentadores = 0;
 
-    /* EVENTO */
+    // EVENTO //
     struct eventos EV[20];
-    int contEvento;
+    int contadorEventos = 0;
+
+    // PARTICIPANTE //
+    struct participantes PA[20];
+    int contadorParticipantes = 0;
 
     int sair;
     int opcao;
 
-    while (sair == 0) {
+    while ( sair == 0 ){
 
         system("cls");
 
-        cout << " \t\t OPCOES: \n\n";
+        cout << " \t\t OPCOES: \n\n ";
         cout << " \t\t\t 1 - Realizar leitura de Cidades \n\n";
         cout << " \t\t\t 2 - Realizar leitura de Apresentador \n\n";
         cout << " \t\t\t 3 - Realizar leitura de Eventos \n\n";
         cout << " \t\t\t 4 - Realizar leitura de Participantes \n\n";
         cout << " \t\t\t 5 - Incluir Apresentadores \n\n";
-        cout << " \t\t\t 6 - Incluir Participantes \n\n";
-        cout << " \t\t\t 7 - Incluir Evento \n\n";
+        cout << " \t\t\t 6 - Incluir Evento \n\n";
+        cout << " \t\t\t 7 - Inscrever Participantes \n\n";
         cout << " \t\t\t 8 - Mostrar Eventos \n\n";
         cout << " \t\t\t 9 - Consultar Evento \n\n";
+        cout << " \t\t\t 10 - Exibir Cidadade \n\n";
+        cout << " \t\t\t 11 - Exibir Apresentador \n\n";
+        cout << " \t\t\t 12 - Exibir Participantes \n\n";
         cout << " \t\t\t 0 - Encerrar Programa \n\n";
         cout << " \t\t ESCOLHA: ";
         cin >> opcao;
 
         switch (opcao) {
+
             case 1: {
                 system("cls");
-                leituraCidades(CI, contadorCidade);
+                leituraCidades(CI, contadorCidades);
+                getch();
                 break;
             }
 
             case 2: {
                 system("cls");
-                leituraApresentadores(AP, contadorApresentador);
+                leituraApresentadores(AP, contadorApresentadores);
+                getch();
                 break;
             }
 
             case 3: {
                 system("cls");
-                leituraEventos(EV, contEvento, CI, AP, contadorCidade, contadorApresentador);
+                leituraEventos(EV, contadorEventos, CI, contadorCidades, AP, contadorApresentadores);
+                getch();
                 break;
             }
 
             case 4: {
                 system("cls");
-                leituraParticipantes(PA,EV, contEvento, CI, AP, contadorParticipantes);
+                leituraParticipantes(PA, EV, contadorEventos, CI, AP, contadorParticipantes);
+                getch();
                 break;
             }
 
-            case 5:{
+            case 5: {
                 system("cls");
-                incluirApresentadores(AP, contadorApresentador);
+                incluirApresentadores(AP, contadorApresentadores);
+                getch();
+                break;
+            }
+
+            case 7: {
+                system("cls");
+                inscreverParticipantes(PA, contadorParticipantes, EV, contadorEventos, CI, contadorCidades, AP, contadorApresentadores);
                 getch();
                 break;
             }
 
             case 6: {
                 system("cls");
-                incluirParticipantes(PA, contadorParticipantes,EV, contEvento,  CI,  contadorCidade,AP, contadorApresentador);
-                break;
-            }
-
-            case 7: {
-                system("cls");
-                incluirEventos(EV, contEvento, qtdeCidades, contadorApresentador, CI, AP);
+                incluirEventos(EV, contadorEventos, quantidadeCidades, contadorApresentadores, CI, AP);
                 getch();
                 break;
             }
 
             case 8: {
                 system("cls");
-                mostrarEventos(EV, contEvento, CI, qtdeCidades, AP, contadorApresentador);
+                mostrarEventos(EV, contadorEventos, CI, quantidadeCidades, AP, contadorApresentadores);
                 getch();
                 break;
             }
 
             case 9: {
                 system("cls");
-                consultarEventos(EV, contEvento,CI, contadorCidade, AP, contadorApresentador);
+                consultarEventos(EV, contadorEventos, CI, contadorCidades, AP, contadorApresentadores);
+                getch();
+                break;
+            }
+
+            case 10: {
+                system("cls");
+                exibirCidades(CI, contadorCidades);
+                getch();
+                break;
+            }
+
+            case 11: {
+                system("cls");
+                exibirApresentadores(AP, contadorApresentadores);
+                getch();
+                break;
+            }
+
+            case 12: {
+                system("cls");
+                exibirParticipantes(PA, contadorParticipantes);
+                getch();
+                break;
+            }
+
+            case 0: {
+                system("cls");
+                char Encerrar='N';
+                cout<<"\n\nDeseja encerrar o programa? (S/N) : ";
+                sair=toupper(getche());
+                if(Encerrar=='S'){
+                    cout<<"\n\nSaindo do programa...";
+
+                }
                 getch();
                 break;
             }
